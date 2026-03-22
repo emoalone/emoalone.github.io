@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>我獨自EMO - 情緒勒索沈浸式體驗</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script type="module" src="main.js"></script>
+  </head>
+  <body>
+    <div id="loader-wrap">
+      <div class="loader-content">
+        <div class="counter" id="progress-text">0%</div>
+        <div class="loader-line-bg">
+          <div class="loader-line" id="progress-bar"></div>
+        </div>
+      </div>
+    </div>
+
+    <header id="main-nav">
+      <div class="logo-container">
+        <img src="./img/logo2.png" alt="Logo" class="logo-img" />
+      </div>
+
+      <div class="nav-tags desktop-only">
+        <a href="#intro" class="nav-tag">首頁</a>
+        <a href="#knowledge-section" class="nav-tag">識別</a>
+        <a href="#quiz-entry" class="nav-tag">測驗</a>
+      </div>
+
+      <div class="hamburger mobile-only" onclick="window.toggleMenu()">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div>
+    </header>
+
+    <div id="mobile-menu-overlay">
+      <a href="#intro" onclick="window.toggleMenu()">首頁</a>
+      <a href="#knowledge-section" onclick="window.toggleMenu()">識別</a>
+      <a href="#quiz-entry" onclick="window.toggleMenu()">測驗</a>
+    </div>
+
+    <section id="intro">
+      <div id="webgl-container"></div>
+      <div class="intro-text-box">
+        <img
+          src="./img/這場遊戲你被迫扮演了多久.png"
+          alt="這場遊戲你被迫扮演了多久"
+          class="subtitle"
+        />
+      </div>
+      <div class="scroll-indicator">
+        <span>SCROLL</span>
+        <div class="line"></div>
+      </div>
+    </section>
+
+    <div id="content">
+      <section id="section-2">
+        <h1 class="text">EMOTION</h1>
+        <h1 aria-hidden="true" class="text outline-text">EMOTION</h1>
+        <h1 aria-hidden="true" class="text filter-text">EMOTION</h1>
+        <div id="wrapper">
+          <section class="images">
+            <img src="./img/你以前不是這樣的.jpg" />
+            <img src="./img/你憑什麼卡點上班.jpg" />
+            <img src="./img/可是我不會這個欸.jpg" />
+            <img src="./img/好啦都我扛.jpg" />
+            <img src="./img/很沒團隊精神欸.jpg" />
+            <img src="./img/欸你現在是在擺什麼臉色.jpg" />
+            <img src="./img/沒事好處都先給你.jpg" />
+            <img src="./img/開個玩笑.jpg" />
+          </section>
+        </div>
+      </section>
+
+      <section class="section-padding" id="knowledge-section">
+        <div class="fog-container">
+          <div class="knowledge-block fog-block">
+            <div class="fog-header">
+              <h2 class="fog-title">愛，不該是一場迷霧</h2>
+              <p class="fog-subtitle">識別情緒勒索的 F.O.G. 迷陣</p>
+              <p class="fog-hint">（ 滑鼠懸停撥開迷霧 ）</p>
+            </div>
+            <div class="fog-grid">
+              <div class="fog-card">
+                <div class="fog-bg-text">F</div>
+                <div class="fog-content-layer">
+                  <h3>Fear</h3>
+                  <span class="chn">恐懼</span>
+                  <div class="fog-divider"></div>
+                  <p class="quote">「你如果敢走，我們就完了。」</p>
+                  <p class="desc">
+                    利用你的不安。你不是不想拒絕，你是<strong>「不敢」</strong>。
+                  </p>
+                </div>
+              </div>
+              <div class="fog-card">
+                <div class="fog-bg-text">O</div>
+                <div class="fog-content-layer">
+                  <h3>Obligation</h3>
+                  <span class="chn">責任</span>
+                  <div class="fog-divider"></div>
+                  <p class="quote">「我養你這麼大，你這點忙都不幫？」</p>
+                  <p class="desc">
+                    利用你的善良。將他的需求包裝成你的<strong>「義務」</strong>。
+                  </p>
+                </div>
+              </div>
+              <div class="fog-card">
+                <div class="fog-bg-text">G</div>
+                <div class="fog-content-layer">
+                  <h3>Guilt</h3>
+                  <span class="chn">罪惡感</span>
+                  <div class="fog-divider"></div>
+                  <p class="quote">「沒關係，反正我就是沒人愛。」</p>
+                  <p class="desc">
+                    利用你的愧疚。扮演受害者，讓你覺得<strong>「都是我的錯」</strong>。
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="knowledge-block deep-dive-container">
+            <div class="section-divider">
+              <span class="divider-text">THE TRAP</span>
+            </div>
+            <h3 class="deep-title">情緒勒索的六大循環</h3>
+            <div class="timeline-container">
+              <div class="timeline-line"></div>
+              <div class="timeline-item left">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <div class="step-badge">01</div>
+                  <h4>要求 (Demand)</h4>
+                  <p>這通常不是「詢問」，而是「命令」。</p>
+                </div>
+              </div>
+              <div class="timeline-item right">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <div class="step-badge">02</div>
+                  <h4>抵抗 (Resistance)</h4>
+                  <p>你覺得哪裡怪怪的，試著婉拒。</p>
+                </div>
+              </div>
+              <div class="timeline-item left">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <div class="step-badge">03</div>
+                  <h4>施壓 (Pressure)</h4>
+                  <p>對方開始跳針：「你變了」。</p>
+                </div>
+              </div>
+              <div class="timeline-item right warning-step">
+                <div class="timeline-dot red-dot"></div>
+                <div class="timeline-content highlight-content">
+                  <div class="step-badge red">04</div>
+                  <h4>威脅 (Threat)</h4>
+                  <p><strong>關鍵轉折。</strong>如果不順意，後果很嚴重。</p>
+                </div>
+              </div>
+              <div class="timeline-item left">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <div class="step-badge">05</div>
+                  <h4>順從 (Compliance)</h4>
+                  <p>為了停止爭吵，你投降了。</p>
+                </div>
+              </div>
+              <div class="timeline-item right">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <div class="step-badge">06</div>
+                  <h4>重複 (Repetition)</h4>
+                  <p>對方學會了，下次繼續。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="knowledge-block sos-section">
+            <div class="section-divider">
+              <span class="divider-text">SOLUTION</span>
+            </div>
+            <h3 class="deep-title">打破循環 S.O.S</h3>
+            <div class="sos-cards-wrapper">
+              <div class="sos-tactical-card">
+                <div class="sos-header">01</div>
+                <div class="sos-body">
+                  <div class="big-letter">S</div>
+                  <div class="sos-info">
+                    <h4>Stop 停下來</h4>
+                    <p>別急著回話！這不是戰爭。</p>
+                  </div>
+                </div>
+              </div>
+              <div class="sos-tactical-card">
+                <div class="sos-header">02</div>
+                <div class="sos-body">
+                  <div class="big-letter">O</div>
+                  <div class="sos-info">
+                    <h4>Observe 觀察</h4>
+                    <p>深呼吸，像個局外人。</p>
+                  </div>
+                </div>
+              </div>
+              <div class="sos-tactical-card">
+                <div class="sos-header">03</div>
+                <div class="sos-body">
+                  <div class="big-letter">S</div>
+                  <div class="sos-info">
+                    <h4>Strategize 策略</h4>
+                    <p>溫柔但堅定地守住底線。</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="fog-footer">
+            <p>唯有看清迷霧，這場遊戲才有結束的一天。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-padding" id="card-fan">
+        <div class="fan-container">
+          <div class="fan-card left" onclick="window.switchFanCard(this)">
+            <img src="./img/公司不缺你一個.png" />
+          </div>
+          <div class="fan-card center" onclick="window.switchFanCard(this)">
+            <img src="./img/別人家的孩子都不會這樣.png" />
+          </div>
+          <div class="fan-card right" onclick="window.switchFanCard(this)">
+            <img src="./img/當不成朋友拉.png" />
+          </div>
+        </div>
+      </section>
+    </div>
+    <section class="full-width-section" id="quiz-entry">
+      <div id="matter-container"></div>
+
+      <div class="ticket-shape">
+        <img
+          src="./img/你是勒索者還是被勒索的人.png"
+          class="test-img"
+          alt="測驗封面"
+        />
+        <div class="ticket-content">
+          <h2 class="quiz-title">
+            透過日常互動情境，分析你在人際關係中的潛在角色
+          </h2>
+          <button class="shadow-btn" onclick="window.openQuizModal()">
+            開始測驗
+          </button>
+          <p
+            style="
+              margin-top: 20px;
+              color: #888;
+              font-size: 0.9rem;
+              text-shadow: 0 0 10px #000;
+            "
+          >
+            ( 滑動游標，撥開漂浮的情緒玩偶 )
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div style="height: 50px; background: #000"></div>
+
+    <footer id="simple-footer">
+      <div class="footer-inner">
+        <img src="./img/logo2.png" alt="我獨自EMO" class="footer-logo" />
+        <p class="copyright">&copy; 2025 我獨自EMO. All Rights Reserved.</p>
+      </div>
+    </footer>
+
+    <div id="quiz-modal" class="modal-overlay hidden">
+      <div class="modal-content quiz-style">
+        <span class="close-btn" onclick="window.closeModal('quiz-modal')"
+          >×</span
+        >
+        <div id="quiz-question-block"><div id="quiz-container"></div></div>
+
+        <div id="result-blackmailer" class="result-scroll-wrapper hidden">
+          <div class="result-header">
+            <div class="result-sub-label">透過分析你是——</div>
+            <div class="result-sub-label2">
+              <img src="./img/情緒勒索者.png" class="result-main-title" />
+              <div class="result-tags">
+                <span class="result-tag-pill">#關心與壓力混在一起</span>
+                <span class="result-tag-pill">#關係裡的施力者</span>
+              </div>
+            </div>
+            <p class="result-intro-text">
+              你在關係中，傾向透過情緒表達來影響對方的行為。
+            </p>
+          </div>
+          <div class="result-white-card">
+            <div class="card-section-title">常見行為特徵</div>
+            <ul class="trait-list">
+              <li>容易說出帶有暗示意味的話</li>
+              <li>習慣用情緒表達需求</li>
+              <li>對關係的不安全感，會轉化成壓力丟給對方</li>
+            </ul>
+            <img src="./img/裝飾.png" alt="" class="card-divider" />
+            <div class="card-section-title">反思引導</div>
+            <div class="reflection-text">
+              下次情緒湧上來時，試著問自己：「我現在是想表達，還是想讓對方照我的方式行動？」
+            </div>
+          </div>
+          <div class="result-footer">
+            <button class="result-btn teal" onclick="window.restartQuiz()">
+              重新測驗
+            </button>
+            <button class="result-btn red" onclick="window.showQuotesBlock()">
+              看情勒金句大集合 ➝
+            </button>
+          </div>
+        </div>
+
+        <div id="result-victim" class="result-scroll-wrapper hidden">
+          <div class="result-header">
+            <div class="result-sub-label">透過分析你是——</div>
+            <div class="result-sub-label2">
+              <img
+                src="./img/情緒承擔者.png"
+                alt=""
+                class="result-main-title"
+              />
+              <div class="result-tags">
+                <span class="result-tag-pill">#總是委屈自己</span>
+                <span class="result-tag-pill">#關係裡的受力者</span>
+              </div>
+            </div>
+            <p class="result-intro-text">
+              你在關係中，習慣優先考慮別人的感受，甚至犧牲自己的需求。
+            </p>
+          </div>
+          <div class="result-white-card">
+            <div class="card-section-title">常見行為特徵</div>
+            <ul class="trait-list">
+              <li>害怕衝突，選擇沈默或道歉</li>
+              <li>容易因為對方的負面情緒而感到焦慮</li>
+              <li>很難拒絕別人的要求，即使那是你不想做的</li>
+            </ul>
+            <img src="./img/裝飾.png" alt="" class="card-divider" />
+            <div class="card-section-title">反思引導</div>
+            <div class="reflection-text">
+              試著練習建立心理界線：「拒絕別人的要求，不代表你是個壞人。」
+            </div>
+          </div>
+          <div class="result-footer">
+            <button class="result-btn teal" onclick="window.restartQuiz()">
+              重新測驗
+            </button>
+            <button class="result-btn red" onclick="window.goToDecryptInput()">
+              輸入我聽過的話 ➝
+            </button>
+          </div>
+        </div>
+
+        <div id="result-quotes" class="result-scroll-wrapper hidden">
+          <h2 class="quotes-title">或許，這些話你也曾聽過...</h2>
+          <p class="quotes-subtitle">那些以愛為名的沉重枷鎖</p>
+
+          <div class="chat-quotes-container">
+            <div class="chat-bubble left">「我這都是為了你好！」</div>
+            <div class="chat-bubble right">「這點小事你都不願意幫忙？」</div>
+            <div class="chat-bubble left">「你以前不是這樣的。」</div>
+            <div class="chat-bubble right">「你如果愛我，就應該聽我的。」</div>
+            <div class="chat-bubble left">「沒關係，反正我就是沒人愛。」</div>
+            <div class="chat-bubble right">
+              「我為你付出那麼多，你怎麼這樣對我？」
+            </div>
+            <div class="chat-bubble left">「你今天敢走，我們之間就完了。」</div>
+          </div>
+
+          <div class="result-footer" style="margin-top: 50px">
+            <button class="result-btn teal" onclick="window.restartQuiz()">
+              重新測驗
+            </button>
+            <button
+              class="result-btn red"
+              onclick="window.closeModal('quiz-modal')"
+            >
+              關閉視窗
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="decrypt-modal" class="modal-overlay hidden">
+      <div class="modal-content decrypt-style">
+        <span class="close-btn" onclick="window.closeModal('decrypt-modal')"
+          >×</span
+        >
+
+        <div id="decrypt-input-state">
+          <h3 class="modal-title">哪句話，讓你至今依然感到窒息？</h3>
+          <p class="modal-desc">寫下那句將你困在迷霧裡的情緒勒索。</p>
+          <div class="input-container-enhanced">
+            <textarea
+              id="user-input"
+              placeholder="例如：「如果沒有我，你以為你能有今天？」..."
+              rows="4"
+            ></textarea>
+            <button
+              class="enhanced-submit-btn"
+              onclick="window.handleDecrypt()"
+            >
+              <span>釋放這句話</span> ➝
+            </button>
+          </div>
+        </div>
+
+        <div id="decrypt-result-state" class="hidden">
+          <div class="thank-you-box">
+            <div class="release-icon">🕊️</div>
+            <h3 style="color: #fff">辛苦了。</h3>
+            <div
+              class="divider-line"
+              style="margin: 20px auto; background-color: var(--color-primary)"
+            ></div>
+            <p style="color: #ccc; font-size: 1.2rem; line-height: 2">
+              這句話的重量，我們替你接住了。<br />你不需要永遠背負著它。
+            </p>
+            <button
+              class="enhanced-submit-btn"
+              style="margin-top: 20px"
+              onclick="window.closeModal('decrypt-modal')"
+            >
+              關閉視窗
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
