@@ -20,6 +20,7 @@ const CARD_TEXTURES = [
     './img/卡_1217圓-02.png', './img/卡_1217圓-04.png', './img/卡_1217圓-18.png',
     './img/卡_1217圓-38.png', './img/卡_1217圓-52.png', './img/卡_1217圓-102.png', './img/卡_1217圓-92.png'
 ];
+// 保留新增的卡片
 const CARD_BACK_TEXTURE = ['./img/卡_1217圓-41.png', './img/卡_1217圓-65.png', './img/卡_1217圓-113.png']; 
 const DOLL_MODEL_PATH = './model/emo02.glb'; 
 
@@ -226,7 +227,8 @@ function initHybridPhysics() {
     const DOLL_SIZE = 120; 
     
     for (let i = 0; i < 8; i++) {
-        const physicsRadius = (DOLL_SIZE / 2) * 0.75;
+        // 碰撞範圍 1.35
+        const physicsRadius = (DOLL_SIZE / 2) * 1.35;
         const body = Bodies.circle(Math.random() * w, Math.random() * h, physicsRadius, { 
             restitution: 0.6, 
             frictionAir: 0.01 
@@ -283,16 +285,22 @@ function initHybridPhysics() {
     dollRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     dollRenderer.setSize(w, h);
     dollRenderer.setPixelRatio(window.devicePixelRatio);
-    // ★ 修改：確保 GLTF 模型的色彩空間正確，不會白白灰灰的 ★
     dollRenderer.outputColorSpace = THREE.SRGBColorSpace; 
     container.appendChild(dollRenderer.domElement);
 
-    // ★ 修改：大幅提高環境光與平行光的強度，解決模型死白的問題 ★
-    const ambientLight = new THREE.AmbientLight(0xffffff, .0); 
+    // ★ 燈光大升級：增加環境光、主光，並加上「背側補光」消滅死黑陰影 ★
+    const ambientLight = new THREE.AmbientLight(0xffffff, 2.5); // 提高整體環境亮度
     dollScene.add(ambientLight);
-    const dirLight = new THREE.DirectionalLight(0xffffff, 3.0);
-    dirLight.position.set(200, 300, 500); 
-    dollScene.add(dirLight);
+    
+    // 主光源 (從右上前方打光)
+    const mainLight = new THREE.DirectionalLight(0xffffff, 3.0); 
+    mainLight.position.set(200, 300, 500); 
+    dollScene.add(mainLight);
+
+    // 補光 (從左下後方打光，照亮原本的黑色陰影區)
+    const fillLight = new THREE.DirectionalLight(0xffffff, 1.8);
+    fillLight.position.set(-300, -100, -300);
+    dollScene.add(fillLight);
 
     dollMeshes = [];
     const loader = new GLTFLoader();
@@ -305,6 +313,22 @@ function initHybridPhysics() {
         const size = box.getSize(new THREE.Vector3());
         
         model.position.sub(center); 
+
+        // 材質微調：讓光線更容易穿透與反射
+        model.traverse((child) => {
+            if (child.isMesh) {
+                child.material.transparent = true;
+                child.material.opacity = 0.85; 
+                child.material.color.setHex(0x00999a); 
+                
+                // 降低金屬感，讓顏色更明亮純粹，不會吸收太多光線
+                child.material.roughness = 0.15; 
+                child.material.metalness = 0.1; 
+                
+                child.material.depthWrite = false; 
+                child.material.needsUpdate = true;
+            }
+        });
 
         const maxDim = Math.max(size.x, size.y, size.z);
         const scaleTarget = DOLL_SIZE / maxDim; 
@@ -323,7 +347,7 @@ function initHybridPhysics() {
     }, undefined, (err) => {
         console.warn(`GLB 載入失敗 (${DOLL_MODEL_PATH})，使用備用方塊。請確認檔案路徑。`, err);
         const geo = new THREE.BoxGeometry(DOLL_SIZE, DOLL_SIZE, DOLL_SIZE);
-        const mat = new THREE.MeshStandardMaterial({ color: 0x00999a });
+        const mat = new THREE.MeshStandardMaterial({ color: 0x00999a }); 
         dollsBodies.forEach(body => {
             const mesh = new THREE.Mesh(geo, mat);
             dollScene.add(mesh);
@@ -390,8 +414,9 @@ function initThree() {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(renderer.domElement);
     
-    const ambient = new THREE.AmbientLight(0xffffff, 0.8); scene.add(ambient);
-    const dirLight = new THREE.DirectionalLight(0xffffff, 0.8); dirLight.position.set(500, 500, 1000); scene.add(dirLight);
+    // 首頁卡片的光線也順便提亮一點點
+    const ambient = new THREE.AmbientLight(0xffffff, 1.2); scene.add(ambient);
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.2); dirLight.position.set(500, 500, 1000); scene.add(dirLight);
 
     const textureLoader = new THREE.TextureLoader();
     createBackgroundParticles();
